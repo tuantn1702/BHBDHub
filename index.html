@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>BHBĐHub</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0a3d91">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="BHBĐHub">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="icon-192.png">
+<style>
+html,body{margin:0;height:100%;background:#0a3d91;overflow:hidden}
+iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#fff;padding-top:env(safe-area-inset-top)}
+#e{display:none;position:fixed;inset:0;color:#fff;font:16px/1.5 system-ui,sans-serif;padding:24px}
+#e a{color:#ffd54a}
+</style>
+</head>
+<body>
+<iframe id="f" allow="clipboard-write; fullscreen" referrerpolicy="origin"></iframe>
+<div id="e"></div>
+<script>
+/* >>> DÁN ĐƯỜNG DẪN TRIỂN KHAI CỦA ỨNG DỤNG (kết thúc bằng /exec) vào dòng dưới <<< */
+var APP_URL='DÁN_ĐƯỜNG_DẪN_EXEC_VÀO_ĐÂY';
+/* <<< */
+(function(){
+  var f=document.getElementById('f'),e=document.getElementById('e');
+  if(!/^https:\/\/script\.google\.com\/.+\/exec/.test(APP_URL)){
+    f.style.display='none';e.style.display='block';
+    e.innerHTML='<b>Chưa cấu hình.</b><br>Mở tệp index.html, dán đường dẫn triển khai (kết thúc bằng /exec) vào biến APP_URL.';return}
+  f.src=APP_URL+(APP_URL.indexOf('?')<0?'?':'&')+'embed=1&v='+Date.now();
+  var t=setTimeout(function(){e.style.cssText='display:block;position:fixed;left:0;right:0;bottom:0;background:#0a3d91;padding:10px 16px;font-size:14px';
+    e.innerHTML='Nếu màn hình trắng: <a href="'+APP_URL+'" target="_top">mở trực tiếp ứng dụng</a>'},9000);
+  f.addEventListener('load',function(){clearTimeout(t);e.style.display='none'});
+  if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(function(){});
+})();
+</script>
+</body>
+</html>
