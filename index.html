@@ -15,27 +15,34 @@
 <style>
 html,body{margin:0;height:100%;background:#0a3d91;overflow:hidden}
 iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#fff;padding-top:env(safe-area-inset-top)}
-#e{display:none;position:fixed;inset:0;color:#fff;font:16px/1.5 system-ui,sans-serif;padding:24px}
-#e a{color:#ffd54a}
+#ld{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font:16px/1.5 system-ui,sans-serif;background:#0a3d91;z-index:2}
+#ld i{width:34px;height:34px;border:4px solid rgba(255,255,255,.3);border-top-color:#ffd54a;border-radius:50%;animation:sp 1s linear infinite;margin-bottom:12px}@keyframes sp{to{transform:rotate(360deg)}}
+#e{display:none;position:fixed;left:0;right:0;bottom:0;z-index:3;background:#0a3d91;color:#fff;font:14px/1.5 system-ui,sans-serif;padding:10px 16px}
+#e a,#e button{color:#ffd54a;background:none;border:0;font:inherit;text-decoration:underline;padding:0 6px}
 </style>
 </head>
 <body>
+<div id="ld"><i></i>Đang mở BHBĐHub…</div>
 <iframe id="f" allow="clipboard-write; fullscreen" referrerpolicy="origin"></iframe>
 <div id="e"></div>
 <script>
-/* >>> DÁN ĐƯỜNG DẪN TRIỂN KHAI CỦA ỨNG DỤNG (kết thúc bằng /exec) vào dòng dưới <<< */
 var APP_URL='https://script.google.com/macros/s/AKfycbyM1PiI8ss8-QOFQ4kLlSz6lfCXo5zH4pNIr_e4YZyZ7-VX7tbYYCCuahXHOI5dpzRGNw/exec';
-/* <<< */
 (function(){
-  var f=document.getElementById('f'),e=document.getElementById('e');
-  if(!/^https:\/\/script\.google\.com\/.+\/exec/.test(APP_URL)){
-    f.style.display='none';e.style.display='block';
-    e.innerHTML='<b>Chưa cấu hình.</b><br>Mở tệp index.html, dán đường dẫn triển khai (kết thúc bằng /exec) vào biến APP_URL.';return}
-  f.src=APP_URL+(APP_URL.indexOf('?')<0?'?':'&')+'embed=1&v='+Date.now();
-  var t=setTimeout(function(){e.style.cssText='display:block;position:fixed;left:0;right:0;bottom:0;background:#0a3d91;padding:10px 16px;font-size:14px';
-    e.innerHTML='Nếu màn hình trắng: <a href="'+APP_URL+'" target="_top">mở trực tiếp ứng dụng</a>'},9000);
-  f.addEventListener('load',function(){clearTimeout(t);e.style.display='none'});
-  if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(function(){});
+var f=document.getElementById('f'),e=document.getElementById('e'),ld=document.getElementById('ld'),t=null,n=0;
+function go(){
+ n++;e.style.display='none';ld.style.display='flex';
+ f.src=APP_URL+(APP_URL.indexOf('?')<0?'?':'&')+'embed=1&v='+Date.now();
+ clearTimeout(t);
+ /* Apps Script khởi động chậm: chờ 25 giây rồi mới hiện nút Tải lại (KHÔNG tự mở sang link khác) */
+ t=setTimeout(function(){
+  e.style.display='block';
+  e.innerHTML='Mở lâu hơn bình thường. <button id="rl">Tải lại</button> · <a href="'+APP_URL+'" target="_blank" rel="noopener">mở trong tab mới</a>';
+  document.getElementById('rl').onclick=go;
+ },25000);
+}
+f.addEventListener('load',function(){clearTimeout(t);e.style.display='none';setTimeout(function(){ld.style.display='none'},400)});
+go();
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(function(){});
 })();
 </script>
 </body>
